@@ -15,10 +15,7 @@ namespace ScreenRecorder
 {
     public partial class Form1 : Form
     {
-        const string usage = "Usage: printScreen.cs [filename]\n" +
-           "Captures screen image and saves it to a file (default file: screen.gif)\n";
-
-        public object CaptureScreen { get; private set; }
+        
 
         public Form1()
         {
@@ -27,53 +24,10 @@ namespace ScreenRecorder
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-            //Capture();
+            
         }
 
-        public new void Capture(string[] args)
-        {
-            try
-            {
-                if (args.Length == 1 && (args[0] == "?" || args[0] == "/?" || args[0] == "-?" || args[0].ToLower() == "help"))
-                {
-                    Console.WriteLine(usage);
-                }
-                else
-                {
-                    try
-                    {
-                        Bitmap capture = CaptureScreen.GetDesktopImage();
-                        string file = Path.Combine(Environment.CurrentDirectory, "screen.gif");
-                        ImageFormat format = ImageFormat.Gif;
-
-                        if (args.Length == 1)
-                        {
-                            file = args[0];
-                            if (args[0].ToUpper().EndsWith(".GIF"))
-                                format = ImageFormat.Gif;
-                            else if (args[0].ToUpper().EndsWith(".BMP"))
-                                format = ImageFormat.Bmp;
-                            else if (args[0].ToUpper().EndsWith(".JPEG"))
-                                format = ImageFormat.Jpeg;
-                            else if (args[0].ToUpper().EndsWith(".PNG"))
-                                format = ImageFormat.Png;
-
-                        }
-                        capture.Save(file, format);
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine(e);
-                    }
-                }
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-
-        }
+        
 
         public static Bitmap GetDesktopImage()
         {
