@@ -1,21 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Drawing.Imaging;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ScreenRecorder
 {
     public partial class Form1 : Form
     {
-        
+
 
         public Form1()
         {
@@ -24,80 +15,70 @@ namespace ScreenRecorder
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-            
+            Capture();
         }
 
-        
-
-        public static Bitmap GetDesktopImage()
+        public void Capture()
         {
-            WIN32_API.SIZE size;
-
-            IntPtr hDC = WIN32_API.GetDC(WIN32_API.GetDesktopWindow());
-            IntPtr hMemDC = WIN32_API.CreateCompatibleDC(hDC);
-
-            size.cx = WIN32_API.GetSystemMetrics(WIN32_API.SM_CXSCREEN);
-            size.cy = WIN32_API.GetSystemMetrics(WIN32_API.SM_CYSCREEN);
-
-            m_HBitmap = WIN32_API.CreateCompatibleBitmap(hDC, size.cx, size.cy);
-
-            if (m_HBitmap != IntPtr.Zero)
+            try
             {
-                IntPtr hOld = (IntPtr)WIN32_API.SelectObject(hMemDC, m_HBitmap);
-                WIN32_API.BitBlt(hMemDC, 0, 0, size.cx, size.cy, hDC, 0, 0, WIN32_API.SRCCOPY);
-                WIN32_API.SelectObject(hMemDC, hOld);
-                WIN32_API.DeleteDC(hMemDC);
-                WIN32_API.ReleaseDC(WIN32_API.GetDesktopWindow(), hDC);
-                return System.Drawing.Image.FromHbitmap(m_HBitmap);
+                Bitmap bitmap = new Bitmap(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
+                Graphics graphics = Graphics.FromImage(bitmap as Image);
+                graphics.CopyFromScreen(0, 0, 0, 0, bitmap.Size);
+                // bitmap.Save()
+                FileGeneration(bitmap);
             }
-            return null;
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
-        protected static IntPtr m_HBitmap;
-
-        public class WIN32_API
+        public static int FileGeneration(Bitmap bitmap)
         {
-            public struct SIZE
+            try
             {
-                public int cx;
-                public int cy;
+                int returnval = 0;
+                Microsoft.Office.Interop.Word.Application winword = new Microsoft.Office.Interop.Word.Application();
+                winword.ShowAnimation = false;
+                winword.Visible = false;
+                object missing = System.Reflection.Missing.Value;
+                Microsoft.Office.Interop.Word.Document document = winword.Documents.Add(ref missing, ref missing, ref missing, ref missing);
+
+                foreach (Microsoft.Office.Interop.Word.Section section in document.Sections)
+                {
+
+                    Microsoft.Office.Interop.Word.Range headerRange = section.Headers[Microsoft.Office.Interop.Word.WdHeaderFooterIndex.wdHeaderFooterPrimary].Range;
+                    headerRange.Fields.Add(headerRange, Microsoft.Office.Interop.Word.WdFieldType.wdFieldPage);
+                    headerRange.ParagraphFormat.Alignment = Microsoft.Office.Interop.Word.WdParagraphAlignment.wdAlignParagraphCenter;
+                    headerRange.Font.ColorIndex = Microsoft.Office.Interop.Word.WdColorIndex.wdBlue;
+                    headerRange.Font.Size = 10;
+                    headerRange.Text = "SAMPLE HEADER NAME";
+                }
+
+
+                Microsoft.Office.Interop.Word.Paragraph para1 = document.Content.Paragraphs.Add(ref missing);
+                object styleHeading1 = "Heading 1";
+                para1.Range.set_Style(ref styleHeading1);
+                para1.Range.Text = bitmap.ToString();
+                para1.Range.InsertParagraphAfter();
+
+
+                object filename = @"E:\TestFile.docx";
+                document.SaveAs2(filename);
+                document.Close(ref missing, ref missing, ref missing);
+                document = null;
+                winword.Quit(ref missing, ref missing, ref missing);
+                winword = null;
+                MessageBox.Show("Document created successfully !");
+                return returnval;
             }
-            public const int SRCCOPY = 13369376;
-            public const int SM_CXSCREEN = 0;
-            public const int SM_CYSCREEN = 1;
+            catch (Exception)
+            {
 
-            [DllImport("gdi32.dll", EntryPoint = "DeleteDC")]
-            public static extern IntPtr DeleteDC(IntPtr hDc);
-
-            [DllImport("gdi32.dll", EntryPoint = "DeleteObject")]
-            public static extern IntPtr DeleteObject(IntPtr hDc);
-
-            [DllImport("gdi32.dll", EntryPoint = "BitBlt")]
-            public static extern bool BitBlt(IntPtr hdcDest, int xDest, int yDest, int wDest, int hDest, IntPtr hdcSource, int xSrc, int ySrc, int RasterOp);
-
-            [DllImport("gdi32.dll", EntryPoint = "CreateCompatibleBitmap")]
-            public static extern IntPtr CreateCompatibleBitmap(IntPtr hdc, int nWidth, int nHeight);
-
-            [DllImport("gdi32.dll", EntryPoint = "CreateCompatibleDC")]
-            public static extern IntPtr CreateCompatibleDC(IntPtr hdc);
-
-            [DllImport("gdi32.dll", EntryPoint = "SelectObject")]
-            public static extern IntPtr SelectObject(IntPtr hdc, IntPtr bmp);
-
-            [DllImport("user32.dll", EntryPoint = "GetDesktopWindow")]
-            public static extern IntPtr GetDesktopWindow();
-
-            [DllImport("user32.dll", EntryPoint = "GetDC")]
-            public static extern IntPtr GetDC(IntPtr ptr);
-
-            [DllImport("user32.dll", EntryPoint = "GetSystemMetrics")]
-            public static extern int GetSystemMetrics(int abc);
-
-            [DllImport("user32.dll", EntryPoint = "GetWindowDC")]
-            public static extern IntPtr GetWindowDC(Int32 ptr);
-
-            [DllImport("user32.dll", EntryPoint = "ReleaseDC")]
-            public static extern IntPtr ReleaseDC(IntPtr hWnd, IntPtr hDc);
+                throw;
+            }
         }
 
     }
