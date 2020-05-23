@@ -1,0 +1,10 @@
+C:\UserData\Z0041XJE\Documents\Personal\Projects\ScreenRecorder-master\ScreenRecorder-master\ScreenRecorder\obj\Debug\ScreenRecorder.csprojAssemblyReference.cache
+C:\UserData\Z0041XJE\Documents\Personal\Projects\ScreenRecorder-master\ScreenRecorder-master\ScreenRecorder\obj\Debug\ScreenRecorder.Form1.resources
+C:\UserData\Z0041XJE\Documents\Personal\Projects\ScreenRecorder-master\ScreenRecorder-master\ScreenRecorder\obj\Debug\ScreenRecorder.Properties.Resources.resources
+C:\UserData\Z0041XJE\Documents\Personal\Projects\ScreenRecorder-master\ScreenRecorder-master\ScreenRecorder\obj\Debug\ScreenRecorder.csproj.GenerateResource.cache
+C:\UserData\Z0041XJE\Documents\Personal\Projects\ScreenRecorder-master\ScreenRecorder-master\ScreenRecorder\obj\Debug\ScreenRecorder.csproj.CoreCompileInputs.cache
+C:\UserData\Z0041XJE\Documents\Personal\Projects\ScreenRecorder-master\ScreenRecorder-master\ScreenRecorder\bin\Debug\ScreenRecorder.exe.config
+C:\UserData\Z0041XJE\Documents\Personal\Projects\ScreenRecorder-master\ScreenRecorder-master\ScreenRecorder\bin\Debug\ScreenRecorder.exe
+C:\UserData\Z0041XJE\Documents\Personal\Projects\ScreenRecorder-master\ScreenRecorder-master\ScreenRecorder\bin\Debug\ScreenRecorder.pdb
+C:\UserData\Z0041XJE\Documents\Personal\Projects\ScreenRecorder-master\ScreenRecorder-master\ScreenRecorder\obj\Debug\ScreenRecorder.exe
+C:\UserData\Z0041XJE\Documents\Personal\Projects\ScreenRecorder-master\ScreenRecorder-master\ScreenRecorder\obj\Debug\ScreenRecorder.pdb

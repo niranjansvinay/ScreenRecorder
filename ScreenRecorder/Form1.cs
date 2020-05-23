@@ -1,25 +1,33 @@
 ﻿using System;
 using System.Drawing;
+using System.IO;
+using System.Security;
 using System.Windows.Forms;
 
 namespace ScreenRecorder
 {
     public partial class Form1 : Form
     {
-
+        private OpenFileDialog openFileDialog1;
+        
 
         public Form1()
         {
             InitializeComponent();
         }
 
-        private void btnStart_Click(object sender, EventArgs e)
+        private void BtnStart_Click(object sender, EventArgs e)
         {
+            if (string.IsNullOrWhiteSpace(textBox1.Text))
+            {
+                btnStart.Enabled = false;
+            }
             Capture();
         }
 
         public void Capture()
         {
+            
             try
             {
                 Bitmap bitmap = new Bitmap(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
@@ -65,8 +73,7 @@ namespace ScreenRecorder
                 para1.Range.InsertParagraphAfter();
 
 
-                object filename = @"E:\TestFile.docx";
-                document.SaveAs2(filename);
+                object filename = @"C:\UserData\Z0041XJE\Documents\Personal\Projects\ScreenRecorder-master\test.docx";
                 document.Close(ref missing, ref missing, ref missing);
                 document = null;
                 winword.Quit(ref missing, ref missing, ref missing);
@@ -80,6 +87,33 @@ namespace ScreenRecorder
                 throw;
             }
         }
+
+        private void btn_browse_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog openFileDialog1 = new FolderBrowserDialog();
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    textBox1.Text = openFileDialog1.SelectedPath; 
+                   // var sr = new StreamReader(openFileDialog1.SelectedPath);
+                    //SetText(sr.ReadToEnd());
+                }
+                catch (SecurityException ex)
+                {
+                    MessageBox.Show($"Security error.\n\nError message: {ex.Message}\n\n" +
+                    $"Details:\n\n{ex.StackTrace}");
+                }
+            }
+
+        }
+
+        private void SetText(string text)
+        {
+            textBox1.Text = text;
+        }
+
+        private void btnStop_Click(object sender, EventArgs e) => Application.Exit();
 
     }
 }
